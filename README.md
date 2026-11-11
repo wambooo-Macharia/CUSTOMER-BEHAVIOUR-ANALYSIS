@@ -1,133 +1,171 @@
-# Customer Behaviour Analysis | Python, SQL & Power BI
+# Customer Shopping Behaviour Analysis
+### End-to-End Data Analytics Project | Python • PostgreSQL • Power BI
 
 ## Project Overview
 
-This project focuses on analysing customer purchasing behaviour to uncover patterns, understand customer preferences, and generate insights that can support data-driven business decisions.
+This project explores customer shopping behaviour using a combination of Python, PostgreSQL and Power BI.
 
-The project follows an end-to-end data analytics workflow, using Python for data preparation and exploration, PostgreSQL for data querying and analysis, and Power BI for data visualization and reporting.
+Starting with an original customer shopping behaviour dataset containing 3,900 records and 18 columns, I performed data cleaning, exploratory data analysis, feature engineering and SQL-based analysis before developing an interactive Power BI dashboard.
 
-The final deliverable is an interactive Power BI dashboard that provides an overview of customer purchasing patterns, product performance, revenue distribution, and customer demographics.
+The objective was to understand customer purchasing patterns, evaluate product performance, examine discount usage, explore customer segmentation and identify revenue trends across different customer groups.
 
-## Project Objectives
-
-The main objectives of this project were to:
-
-- Clean and prepare raw customer data for analysis.
-- Explore the dataset to understand customer purchasing patterns.
-- Identify purchasing trends across different product categories.
-- Analyse the relationship between discounts and customer purchases.
-- Segment customers based on their purchasing history.
-- Examine revenue and sales distribution across categories and age groups.
-- Develop an interactive dashboard to communicate key business metrics and insights.
+The project demonstrates an end-to-end data analytics workflow, from raw data preparation to business intelligence and visualization.
 
 ## Tools and Technologies
 
-| Tool | Purpose |
+| Tool | Application |
 |---|---|
-| Python (Pandas) | Data cleaning, preparation and exploratory data analysis. |
-| PostgreSQL | Data storage, SQL querying and customer behaviour analysis. |
-| Power BI | Data visualization, dashboard development and reporting. |
-| SQL | Data aggregation, filtering, segmentation and analytical queries. |
+| Python | Data cleaning, exploration and feature engineering |
+| Pandas | Data manipulation and transformation |
+| PostgreSQL | Database management and SQL analysis |
+| SQLAlchemy & Psycopg2 | Connecting Python to PostgreSQL |
+| SQL | Business analysis and data querying |
+| Power BI | Interactive dashboard development |
 
 ## Project Workflow
 
-### 1. Data Cleaning and Preparation – Python
+### 1. Data Understanding and Cleaning – Python
 
-Python was used as the initial environment for working with the dataset.
+I used Python and Pandas to inspect, clean and prepare the original dataset.
 
-The preparation stage involved working with the data to improve its quality and make it suitable for further analysis.
+**Key activities:**
 
-Key activities included:
-- Loading the dataset into a Pandas DataFrame.
-- Inspecting the dataset structure and understanding its columns.
-- Examining data quality and identifying potential inconsistencies.
-- Preparing the dataset for analysis and database integration.
+- Loaded the dataset into a Pandas DataFrame.
+- Inspected the dataset using `head()`, `info()` and `describe()`.
+- Assessed missing values using `isnull().sum()`.
+- Identified 37 missing values in the Review Rating column.
+- Handled missing review ratings by imputing the median rating within each product category.
+- Standardized column names by converting them to lowercase and replacing spaces with underscores.
+- Renamed `purchase_amount_(usd)` to `purchase_amount`.
+- Compared `discount_applied` and `promo_code_used` to identify redundant information.
+- Removed the redundant `promo_code_used` column after confirming that both columns contained identical values.
 
-### 2. Data Exploration and Analysis – SQL
+### 2. Feature Engineering – Python
 
-After preparation, the dataset was loaded into PostgreSQL for querying and further analysis.
+I created additional columns to support more detailed analysis.
 
-SQL was used to investigate customer purchasing behaviour and answer specific business questions.
+**Age Group**
 
-Some of the analytical questions explored included:
+Used Pandas `qcut()` to divide customers into four age groups:
 
-- **Discount Analysis:** Which five products have the highest percentage of purchases made using discounts?
-- **Customer Segmentation:** How can customers be categorized into new, returning and loyal customers based on their previous purchases?
-- **Product Performance:** What are the three most purchased products within each product category?
-- **Customer Purchasing Patterns:** How do purchasing behaviours differ across customer groups?
-- **Category Analysis:** How do product categories contribute to overall sales and revenue?
+- Young Adult
+- Adult
+- Middle-Aged
+- Senior
 
-SQL concepts applied included:
-- Common Table Expressions (CTEs).
-- Aggregate functions such as `COUNT()`, `SUM()` and `AVG()`.
-- Conditional statements using `CASE WHEN`.
-- Window functions such as `ROW_NUMBER()`.
-- Data grouping and sorting using `GROUP BY` and `ORDER BY`.
-- Subqueries and filtering.
+**Purchase Frequency in Days**
 
-### 3. Data Visualization – Power BI
+Created a numerical column called `purchase_frequency_days` by mapping purchasing frequency categories to their corresponding day intervals.
 
-Power BI was used to transform the analysed data into an interactive dashboard.
+Examples:
+- Weekly – 7 days
+- Fortnightly – 14 days
+- Monthly – 30 days
+- Quarterly – 90 days
+- Annually – 365 days
 
-The dashboard provides an overview of customer behaviour through key performance indicators, charts and interactive filters.
+### 3. Database Integration – PostgreSQL
 
-**Dashboard Highlights**
+After cleaning and transforming the dataset, I established a connection between Python and PostgreSQL using SQLAlchemy and Psycopg2.
 
-- **Key Performance Indicators (KPIs):**
-  - Total number of customers.
-  - Average purchase amount.
-  - Average customer review rating.
+The cleaned DataFrame was loaded into PostgreSQL as a table named `customer` within the `customer behavior` database.
 
-- **Customer Analysis:**
-  - Percentage of customers by subscription status.
-  - Customer distribution across different demographics.
+This enabled further analysis using SQL.
 
-- **Sales and Revenue Analysis:**
-  - Revenue by product category.
-  - Sales by product category.
-  - Revenue by age group.
-  - Sales by age group.
+### 4. Data Analysis – SQL
 
-- **Interactive Filters:**
-  - Gender.
-  - Product category.
-  - Subscription status.
-  - Shipping type.
+I used PostgreSQL to investigate business questions related to customer purchasing behaviour.
 
-These interactive elements allow users to explore the data from different perspectives and identify patterns across customer groups.
+**Key analytical questions included:**
+
+1. How much revenue is generated by male and female customers?
+2. Which customers used discounts but still spent above the average purchase amount?
+3. What are the five products with the highest average review ratings?
+4. How do average purchase amounts compare between standard and express shipping?
+5. Do subscribed customers spend more than non-subscribed customers?
+6. Which five products have the highest percentage of purchases made using discounts?
+7. How can customers be segmented into new, returning and loyal customers based on previous purchases?
+8. What are the three most purchased products within each product category?
+9. Are repeat buyers more likely to subscribe?
+10. What is the revenue contribution of each age group?
+
+**SQL concepts applied:**
+
+- Common Table Expressions (CTEs)
+- Aggregate functions (`SUM`, `COUNT`, `AVG`)
+- Conditional logic (`CASE WHEN`)
+- Window functions (`ROW_NUMBER`)
+- Subqueries
+- Data grouping and sorting (`GROUP BY`, `ORDER BY`)
+- Filtering (`WHERE`, `IN`)
+
+### 5. Dashboard Development – Power BI
+
+Power BI was used to develop an interactive dashboard to communicate the findings from the analysis.
+
+**Dashboard components:**
+
+**Key Performance Indicators**
+- Total Customers
+- Average Purchase Amount
+- Average Review Rating
+
+**Customer Analysis**
+- Customer subscription status
+- Customer purchasing patterns
+- Customer demographics
+
+**Sales and Revenue Analysis**
+- Revenue by product category
+- Sales by product category
+- Revenue by age group
+- Sales by age group
+
+**Interactive Filters**
+- Gender
+- Product Category
+- Subscription Status
+- Shipping Type
+
+The dashboard allows users to interact with the data and explore customer purchasing behaviour across different dimensions.
 
 ## Key Skills Demonstrated
 
-Through this project, I applied practical skills in:
+- Data cleaning and preprocessing
+- Exploratory Data Analysis (EDA)
+- Feature engineering
+- Python programming and Pandas
+- PostgreSQL database integration
+- SQL querying and business analysis
+- Customer segmentation
+- Window functions and CTEs
+- Data visualization and dashboard development
+- Translating business questions into analytical solutions
 
-- Data cleaning and preparation using Python.
-- Exploratory data analysis (EDA).
-- Relational database management using PostgreSQL.
-- Writing analytical SQL queries.
-- Customer segmentation and purchasing behaviour analysis.
-- Applying SQL window functions and CTEs.
-- Data visualization and dashboard development using Power BI.
-- Translating raw data into meaningful business insights.
+## Project Files
 
-## Project Deliverables
-
-- Python scripts/notebooks used for data preparation and exploration.
-- SQL queries used for data analysis.
-- Interactive Power BI dashboard (`.pbix`).
+| File | Description |
+|---|---|
+| `Customer_shopping_behavior.ipynb` | Python notebook containing data cleaning, exploration, feature engineering and database integration |
+| `customer_shopping_behavior.sql` | SQL queries used for business analysis |
+| `customer_behaviour_dashboard.pbix` | Interactive Power BI dashboard |
+| `README.md` | Project documentation |
 
 ## Conclusion
 
-This project demonstrates the application of multiple data analytics tools in solving a business-oriented problem.
+This project provided an opportunity to apply data analytics skills across multiple tools and stages of the data analysis process.
 
-By combining Python, SQL and Power BI, I was able to work through different stages of the analytics process, from preparing raw data and exploring customer behaviour to developing an interactive dashboard.
+By combining Python, PostgreSQL and Power BI, I transformed an original customer shopping dataset into a structured dataset that could be explored, analysed and visualized.
 
-The project strengthened my ability to work with data across different tools and communicate analytical information through visualizations.
+The project demonstrates my ability to work with raw data, perform data transformations, write analytical SQL queries and develop interactive dashboards that support data-driven decision-making.
 
 ---
 
 **Author:** Tabitha Macharia
 
-**Project:** Customer Behaviour Analysis
+**Project:** Customer Shopping Behaviour Analysis
 
-**Tools:** Python | PostgreSQL | Power BI
+**Technologies:** Python | PostgreSQL | SQL | Power BI
+
+
 
